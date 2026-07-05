@@ -1,16 +1,8 @@
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f7f7f7;
-}
-
 .app {
-  max-width: 900px;
-  margin: auto;
   padding: 20px;
 }
 
 section {
-  background-color: white;
   padding: 20px;
   margin-bottom: 25px;
   border-radius: 8px;
@@ -31,11 +23,8 @@ label {
 
 button {
   cursor: pointer;
-}
-
-.error {
-  color: red;
-  font-weight: bold;
+  background-color: rgba(0, 151, 255, 0.8);
+  border-color: rgba(0, 151, 255, 0.8);
 }
 
 .cart-item,

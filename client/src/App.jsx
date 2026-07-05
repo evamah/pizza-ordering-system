@@ -261,8 +261,7 @@ function App() {
 
         <div data-testid="menu-list">
           <h3>Menu</h3>
-
-          <label>Menue:</label>
+          {/* Dropdown pizza names */}
           <select
             value={selectedPizzaId}
             onChange={(e) => setSelectedPizzaId(e.target.value)}
@@ -274,7 +273,8 @@ function App() {
             ))}
           </select>
 
-          <label>Size:</label>
+          {/* Dropdown pizza sizes */}
+          <h3>Size:</h3>
           <select
             value={selectedSizeId}
             onChange={(e) => setSelectedSizeId(e.target.value)}
@@ -286,7 +286,8 @@ function App() {
             ))}
           </select>
 
-          <h4>Toppings</h4>
+          {/* Buttons pizza toppings */}
+          <h3>Toppings:</h3>
           {menu.toppings.map((topping) => (
             <label key={topping.id}>
               <input
@@ -298,7 +299,8 @@ function App() {
             </label>
           ))}
 
-          <label>Quantity:</label>
+          {/* Dropdown pizza quantity */}
+          <h3>Quantity:</h3>
           <input
             type="number"
             min="1"
@@ -306,6 +308,7 @@ function App() {
             onChange={(e) => setQuantity(e.target.value)}
           />
 
+          {/* Add to Cart button */}
           <button onClick={addToCart}>Add to Cart</button>
         </div>
 
@@ -317,7 +320,7 @@ function App() {
           {cart.map((item, index) => (
             <div key={index} className="cart-item">
               <p>
-                {getPizzaName(item.pizzaId)} | {getSizeName(item.sizeId)}
+                {getPizzaName(item.pizzaId)} size {getSizeName(item.sizeId)}
               </p>
               <p>
                 Toppings:{" "}
@@ -337,7 +340,6 @@ function App() {
         </div>
 
         <h3>Customer Details</h3>
-
         <input
           placeholder="Customer name"
           value={customerName}
@@ -381,7 +383,6 @@ function App() {
         )}
 
         <h3>Track Order</h3>
-
         <input
           placeholder="Enter order id"
           value={trackId}
@@ -398,6 +399,8 @@ function App() {
           </div>
         )}
       </section>
+
+      <hr />
 
       <section>
         <h2>Employee Screen</h2>
