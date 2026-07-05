@@ -147,6 +147,7 @@ function App() {
       discount = pizzaBaseTotal * 0.05;
     }
 
+
     return pizzaBaseTotal + sizeTotal + toppingsTotal - discount;
   }
 
