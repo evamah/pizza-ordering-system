@@ -263,6 +263,205 @@ function App() {
 
       {error && <p className="error">{error}</p>}
 
+      <section>
+        <h2>Customer Screen</h2>
+
+        <div data-testid="menu-list">
+          <h3>Menu</h3>
+
+          <label>Pizza:</label>
+          <select
+            value={selectedPizzaId}
+            onChange={(e) => setSelectedPizzaId(e.target.value)}
+          >
+            {menu.pizzas.map((pizza) => (
+              <option key={pizza.id} value={pizza.id}>
+                {pizza.name} - {pizza.price}
+              </option>
+            ))}
+          </select>
+
+          <label>Size:</label>
+          <select
+            value={selectedSizeId}
+            onChange={(e) => setSelectedSizeId(e.target.value)}
+          >
+            {menu.sizes.map((size) => (
+              <option key={size.id} value={size.id}>
+                {size.name} - {size.price}
+              </option>
+            ))}
+          </select>
+
+          <h4>Toppings</h4>
+          {menu.toppings.map((topping) => (
+            <label key={topping.id}>
+              <input
+                type="checkbox"
+                checked={selectedToppings.includes(topping.id)}
+                onChange={() => handleToppingChange(topping.id)}
+              />
+              {topping.name} - {topping.price}
+            </label>
+          ))}
+
+          <label>Quantity:</label>
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(e.target.value)}
+          />
+
+          <button onClick={addToCart}>Add to Cart</button>
+        </div>
+
+        <div data-testid="cart">
+          <h3>Cart</h3>
+
+          {cart.length === 0 && <p>No pizzas in cart</p>}
+
+          {cart.map((item, index) => (
+            <div key={index} className="cart-item">
+              <p>
+                {getPizzaName(item.pizzaId)} | {getSizeName(item.sizeId)}
+              </p>
+              <p>
+                Toppings:{" "}
+                {item.toppings.length === 0
+                  ? "No toppings"
+                  : item.toppings.map(getToppingName).join(", ")}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        <div data-testid="order-summary-panel">
+          <h3>Order Summary</h3>
+          <p>Number of pizzas: {cart.length}</p>
+          <p>Estimated price: {calculateEstimatedPrice()}</p>
+          {cart.length >= 3 && <p>5% discount applied on pizza base price</p>}
+        </div>
+
+        <h3>Customer Details</h3>
+
+        <input
+          placeholder="Customer name"
+          value={customerName}
+          onChange={(e) => setCustomerName(e.target.value)}
+        />
+
+        <input
+          placeholder="Phone"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+        />
+
+        <select
+          value={deliveryType}
+          onChange={(e) => setDeliveryType(e.target.value)}
+        >
+          <option value="delivery">Delivery</option>
+          <option value="pickup">Pickup from store</option>
+        </select>
+
+        {deliveryType === "delivery" && (
+          <input
+            placeholder="Delivery address"
+            value={deliveryAddress}
+            onChange={(e) => setDeliveryAddress(e.target.value)}
+          />
+        )}
+
+        <button data-testid="checkout-button" onClick={checkout}>
+          Pay and Place Order
+        </button>
+
+        {confirmation && (
+          <div data-testid="order-confirmation">
+            <h3>Order Confirmed</h3>
+            <p>Order ID: {confirmation.id}</p>
+            <p>Status: {confirmation.status}</p>
+            <p>Payment: {confirmation.paymentStatus}</p>
+            <p>Total price from server: {confirmation.totalPrice}</p>
+          </div>
+        )}
+
+        <h3>Track Order</h3>
+
+        <input
+          placeholder="Enter order id"
+          value={trackId}
+          onChange={(e) => setTrackId(e.target.value)}
+        />
+
+        <button onClick={trackOrder}>Track</button>
+
+        {trackedOrder && (
+          <div>
+            <p>Order ID: {trackedOrder.id}</p>
+            <p>Status: {trackedOrder.status}</p>
+            <p>Payment: {trackedOrder.paymentStatus}</p>
+          </div>
+        )}
+      </section>
+
+      <section>
+        <h2>Employee Screen</h2>
+
+        <button onClick={loadEmployeeOrders}>Load Employee Orders</button>
+
+        <div data-testid="employee-orders">
+          {employeeOrders.length === 0 && <p>No active orders</p>}
+
+          {employeeOrders.map((order) => (
+            <div key={order.id} className="order-card">
+              <p>Order ID: {order.id}</p>
+              <p>Customer: {order.customerName}</p>
+              <p>Phone: {order.phone}</p>
+              <p>Address: {order.deliveryAddress}</p>
+              <p>Price: {order.totalPrice}</p>
+              <p>Status: {order.status}</p>
+
+              {order.status === "new" && (
+                <button onClick={() => updateStatus(order.id, "preparing")}>
+                  Move to Preparing
+                </button>
+              )}
+
+              {order.status === "preparing" && (
+                <button onClick={() => updateStatus(order.id, "ready")}>
+                  Move to Ready
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section>
+        <h2>Delivery Person Screen</h2>
+
+        <button onClick={loadDeliveryOrders}>Load Ready Orders</button>
+
+        <div data-testid="delivery-orders">
+          {deliveryOrders.length === 0 && <p>No ready delivery orders</p>}
+
+          {deliveryOrders.map((order) => (
+            <div key={order.id} className="order-card">
+              <p>Order ID: {order.id}</p>
+              <p>Customer: {order.customerName}</p>
+              <p>Phone: {order.phone}</p>
+              <p>Address: {order.deliveryAddress}</p>
+              <p>Price: {order.totalPrice}</p>
+
+              <button onClick={() => updateStatus(order.id, "delivered")}>
+                Mark as Delivered
+              </button>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }
