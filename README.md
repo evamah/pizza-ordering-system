@@ -115,6 +115,7 @@ Routes:
 - App.jsx - Contains the main application logic and user interfaces.
 - App.css - Contains the application styling.
 - main.jsx - The entry point of the React application. 
+- vite.config.js - Contains the configuration settings for the Vite development server.
 
 
 ## Price Calculation:
