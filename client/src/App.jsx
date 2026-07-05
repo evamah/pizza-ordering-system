@@ -19,14 +19,13 @@ function App() {
   const [deliveryAddress, setDeliveryAddress] = useState("");
   const [deliveryType, setDeliveryType] = useState("delivery");
 
-  const [confirmation, setConfirmation] = useState(null);
-  const [error, setError] = useState("");
-
   const [trackId, setTrackId] = useState("");
   const [trackedOrder, setTrackedOrder] = useState(null);
 
   const [employeeOrders, setEmployeeOrders] = useState([]);
   const [deliveryOrders, setDeliveryOrders] = useState([]);
+
+  const [confirmation, setConfirmation] = useState(null);
 
   useEffect(() => {
     fetchMenu();
@@ -56,7 +55,8 @@ function App() {
     } else {
       // Add the topping, max 3 toppings allowed
       if (selectedToppings.length >= 3) {
-        setError("You can choose up to 3 toppings for each pizza");
+        alert("You can choose up to 3 toppings for each pizza");
+        //setError("You can choose up to 3 toppings for each pizza");
         return;
       }
 
@@ -64,14 +64,13 @@ function App() {
       setSelectedToppings(updatedToppings);
     }
 
-    setError("");
   }
 
   function addToCart() {
     const amount = Number(quantity);
 
     if (amount < 1) {
-      setError("Quantity must be at least 1");
+      alert("Quantity must be at least 1");
       return;
     }
 
@@ -88,7 +87,6 @@ function App() {
     setCart([...cart, ...newItems]);
     setSelectedToppings([]);
     setQuantity(1);
-    setError("");
   }
 
   function getPizzaName(id) {
@@ -152,10 +150,8 @@ function App() {
   }
 
   async function checkout() {
-    setError("");
-
     if (cart.length === 0) {
-      setError("Cart is empty");
+      alert("Cart is empty");
       return;
     }
 
@@ -183,7 +179,7 @@ function App() {
     const data = await response.json();
 
     if (!response.ok) {
-      setError(data.error);
+      alert(data.error);
       return;
     }
 
@@ -196,7 +192,6 @@ function App() {
   }
 
   async function trackOrder() {
-    setError("");
     setTrackedOrder(null);
 
     // Fetch the order with trackId from the server
@@ -204,7 +199,7 @@ function App() {
     const data = await response.json();
 
     if (!response.ok) {
-      setError(data.error);
+      alert(data.error);
       return;
     }
 
@@ -230,8 +225,6 @@ function App() {
   }
 
   async function updateStatus(orderId, status) {
-    setError("");
-
     // Update the order status on the server
     const response = await fetch(`${API_URL}/orders/${orderId}/status`, {
       method: "PATCH",
@@ -244,7 +237,7 @@ function App() {
     const data = await response.json();
 
     if (!response.ok) {
-      setError(data.error);
+      alert(data.error);
       return;
     }
 
@@ -257,12 +250,11 @@ function App() {
     return <h2>Loading...</h2>;
   }
 
+
   // Main application UI
   return (
     <div className="app">
       <h1>Pizza Ordering System</h1>
-
-      {error && <p className="error">{error}</p>}
 
       <section>
         <h2>Customer Screen</h2>
@@ -270,7 +262,7 @@ function App() {
         <div data-testid="menu-list">
           <h3>Menu</h3>
 
-          <label>Pizza:</label>
+          <label>Menue:</label>
           <select
             value={selectedPizzaId}
             onChange={(e) => setSelectedPizzaId(e.target.value)}
